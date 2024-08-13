@@ -13,25 +13,54 @@ shapeSelect.addEventListener('change', (e) => {
     currentShape = e.target.value;
 });
 
+// Obtener referencia al input de escalado
+const scaleInput = document.getElementById('scale-input');
+
+// Función para escalar una figura
+function scaleShape(shape, Vs) {
+  if (shape.type === 'rectangle') {
+    shape.width = shape.width * Vs;
+    shape.height = shape.height * Vs;
+  } else if (shape.type === 'circle') {
+    shape.radius = shape.radius * Vs;
+  } else if (shape.type === 'square') {
+    shape.size = shape.size * Vs;
+  } else if (shape.type === 'triangle') {
+    shape.size = shape.size * Vs;
+  }
+  return shape;
+}
+
 // Manejar el clic en el canvas para dibujar formas
 canvas.addEventListener('click', (e) => {
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
+  
     let shape;
     if (currentShape === 'rectangle') {
-        shape = { type: 'rectangle', x, y, width: 100, height: 50 };
+      shape = { type: 'rectangle', x, y, width: 100, height: 50 };
     } else if (currentShape === 'circle') {
-        shape = { type: 'circle', x, y, radius: 50 };
+      shape = { type: 'circle', x, y, radius: 50 };
     } else if (currentShape === 'square') {
-        shape = { type: 'square', x, y, size: 80 };
+      shape = { type: 'square', x, y, size: 80 };
     } else if (currentShape === 'triangle') {
-        shape = { type: 'triangle', x, y, size: 80 };
+      shape = { type: 'triangle', x, y, size: 80 };
     }
+  
+    // Aplicar el escalado a la forma antes de agregarla al array
+    const Vs = parseFloat(scaleInput.value);
+    shape.width = shape.width * Vs;
+    shape.height = shape.height * Vs;
+    if (shape.type === 'circle') {
+      shape.radius = shape.radius * Vs;
+    } else if (shape.type === 'square' || shape.type === 'triangle') {
+      shape.size = shape.size * Vs;
+    }
+  
     shapes.push(shape);
     drawShapes();
-});
+  });
 
 // Función para dibujar todas las formas en el canvas
 function drawShapes() {
