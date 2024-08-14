@@ -16,20 +16,6 @@ shapeSelect.addEventListener('change', (e) => {
 // Obtener referencia al input de escalado
 const scaleInput = document.getElementById('scale-input');
 
-// Función para escalar una figura
-function scaleShape(shape, Vs) {
-  if (shape.type === 'rectangle') {
-    shape.width = shape.width * Vs;
-    shape.height = shape.height * Vs;
-  } else if (shape.type === 'circle') {
-    shape.radius = shape.radius * Vs;
-  } else if (shape.type === 'square') {
-    shape.size = shape.size * Vs;
-  } else if (shape.type === 'triangle') {
-    shape.size = shape.size * Vs;
-  }
-  return shape;
-}
 
 // Manejar el clic en el canvas para dibujar formas
 canvas.addEventListener('click', (e) => {
@@ -39,13 +25,13 @@ canvas.addEventListener('click', (e) => {
   
     let shape;
     if (currentShape === 'rectangle') {
-      shape = { type: 'rectangle', x, y, width: 100, height: 50 };
+      shape = { type: 'rectangle', x, y, width: 100, height: 50, rotation: 0 };
     } else if (currentShape === 'circle') {
-      shape = { type: 'circle', x, y, radius: 50 };
+      shape = { type: 'circle', x, y, radius: 50, rotation: 0 };
     } else if (currentShape === 'square') {
-      shape = { type: 'square', x, y, size: 80 };
+      shape = { type: 'square', x, y, size: 80, rotation: 0 };
     } else if (currentShape === 'triangle') {
-      shape = { type: 'triangle', x, y, size: 80 };
+      shape = { type: 'triangle', x, y, size: 80, rotation: 0 };
     }
   
     // Aplicar el escalado a la forma antes de agregarla al array
@@ -58,25 +44,32 @@ canvas.addEventListener('click', (e) => {
       shape.size = shape.size * Vs;
     }
   
+    // Aplicar la rotación a la forma antes de agregarla al array
+    const angle = parseFloat(rotationInput.value);
+    shape = rotateShape(shape, angle);
+  
     shapes.push(shape);
     drawShapes();
   });
 
-// Función para dibujar todas las formas en el canvas
-function drawShapes() {
+  function drawShapes() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     shapes.forEach((shape, index) => {
+        ctx.save(); // Guardar el estado actual del contexto
+        ctx.translate(shape.x, shape.y); // Mover el origen a la posición original de la figura
+        ctx.rotate(shape.rotation * Math.PI / 180); // Aplicar la rotación
+
         ctx.beginPath();
         if (shape.type === 'rectangle') {
-            ctx.rect(shape.x, shape.y, shape.width, shape.height);
+            ctx.rect(-shape.width / 2, -shape.height / 2, shape.width, shape.height);
         } else if (shape.type === 'circle') {
-            ctx.arc(shape.x, shape.y, shape.radius, 0, Math.PI * 2);
+            ctx.arc(0, 0, shape.radius, 0, Math.PI * 2);
         } else if (shape.type === 'square') {
-            ctx.rect(shape.x, shape.y, shape.size, shape.size);
+            ctx.rect(-shape.size / 2, -shape.size / 2, shape.size, shape.size);
         } else if (shape.type === 'triangle') {
-            ctx.moveTo(shape.x, shape.y);
-            ctx.lineTo(shape.x + shape.size / 2, shape.y + shape.size);
-            ctx.lineTo(shape.x - shape.size / 2, shape.y + shape.size);
+            ctx.moveTo(0, -shape.size); // Punto superior del triángulo
+            ctx.lineTo(-shape.size / 2, shape.size / 2); // Punto inferior izquierdo
+            ctx.lineTo(shape.size / 2, shape.size / 2); // Punto inferior derecho
             ctx.closePath();
         }
         ctx.stroke();
@@ -84,11 +77,7 @@ function drawShapes() {
         ctx.fill();
         ctx.strokeStyle = 'black';
         ctx.stroke();
+
+        ctx.restore(); // Restaurar el estado anterior del contexto
     });
 }
-
-// Manejar el botón de limpiar
-clearButton.addEventListener('click', () => {
-    shapes = [];
-    drawShapes();
-});
