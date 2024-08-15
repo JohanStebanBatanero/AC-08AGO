@@ -42,6 +42,10 @@
 					shape = { type: 'rectangle', x, y, width: 100, height: 50, rotation: 0, scale: 1 };
 				} else if (currentShape === 'circle') {
 					shape = { type: 'circle', x, y, radius: 50, rotation: 0, scale: 1 };
+				} else if (currentShape === 'triangle') {
+					shape = { type: 'triangle', x, y, width: 100, height: 50, rotation: 0, scale: 1 };
+				} else if (currentShape === 'square') {
+					shape = { type: 'square', x, y, width: 100, height: 100, rotation: 0, scale: 1 };
 				}
 				shapes.push(shape);
 				selectedShapeIndex = shapes.length - 1;
@@ -72,26 +76,33 @@
 
 		// Función para dibujar todas las formas en el canvas
 		function drawShapes() {
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			shapes.forEach((shape, index) => {
-				ctx.save();
-				ctx.translate(shape.x, shape.y);
-				ctx.rotate(shape.rotation);
-				ctx.scale(shape.scale, shape.scale);
+    		ctx.clearRect(0, 0, canvas.width, canvas.height);
+    		shapes.forEach((shape, index) => {
+        		ctx.save();
+        		ctx.translate(shape.x, shape.y);
+        		ctx.rotate(shape.rotation);
+        		ctx.scale(shape.scale, shape.scale);
 
-				ctx.beginPath();
-				if (shape.type === 'rectangle') {
-					ctx.rect(-shape.width / 2, -shape.height / 2, shape.width, shape.height);
-				} else if (shape.type === 'circle') {
-					ctx.arc(0, 0, shape.radius, 0, Math.PI * 2);
-				}
-				ctx.fillStyle = 'rgba(0, 100, 255, 0.3)';
-				ctx.fill();
-				ctx.strokeStyle = index === selectedShapeIndex ? 'red' : 'black';
-				ctx.stroke();
+        		ctx.beginPath();
+        		if (shape.type === 'rectangle') {
+            		ctx.rect(-shape.width / 2, -shape.height / 2, shape.width, shape.height);
+        		} else if (shape.type === 'circle') {
+            		ctx.arc(0, 0, shape.radius, 0, Math.PI * 2);
+       		 	} else if (shape.type === 'triangle') {
+            		ctx.moveTo(-shape.width / 2, -shape.height / 2);
+            		ctx.lineTo(shape.width / 2, -shape.height / 2);
+            		ctx.lineTo(0, shape.height / 2);
+            		ctx.closePath();
+        		} else if (shape.type === 'square') {
+            		ctx.rect(-shape.width / 2, -shape.height / 2, shape.width, shape.height);
+        		}
+        		ctx.fillStyle = 'rgba(0, 100, 255, 0.3)';
+        		ctx.fill();
+       		 	ctx.strokeStyle = index === selectedShapeIndex ? 'red' : 'black';
+        		ctx.stroke();
 
-				ctx.restore();
-			});
+        		ctx.restore();
+    		});
 		}
 
         		// Manejar el botón de limpiar

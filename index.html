@@ -23,6 +23,19 @@
             display: inline-block;
             margin: 5px;
         }
+        .button-group button {
+            font-size: 24px;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background-color: #ffffff;
+            cursor: pointer;
+        }
+        .button-group button:hover {
+            background-color: #aaa;
+        }
     </style>
 </head>
 <body>
@@ -31,15 +44,17 @@
         <select id="shape">
             <option value="rectangle">Rectángulo</option>
             <option value="circle">Círculo</option>
+            <option value="triangle">Triángulo</option>
+            <option value="square">Cuadrado</option>
         </select>
         <button id="rotate">Rotar Figura</button>
         <label for="scale">Escalar Figura:</label>
         <input type="range" id="scale" min="0.5" max="2" step="0.1" value="1">
         <div class="button-group">
-            <button id="moveLeft">Izquierda</button>
-            <button id="moveRight">Derecha</button>
-            <button id="moveUp">Arriba</button>
-            <button id="moveDown">Abajo</button>
+            <button id="moveLeft">&#8592;</button>
+            <button id="moveRight">&#8594;</button>
+            <button id="moveUp">&#8593;</button>
+            <button id="moveDown">&#8595;</button>
         </div>
         <button id="clear">Limpiar Canvas</button>
     </div>
