@@ -12,14 +12,16 @@
         }
         #controls {
             margin-bottom: 20px;
+            text-align: center;
         }
         canvas {
             border: 1px solid black;
             display: block;
             margin: 0 auto;
         }
-        .selected {
-            border: 2px solid red;
+        .button-group {
+            display: inline-block;
+            margin: 5px;
         }
     </style>
 </head>
@@ -27,20 +29,24 @@
     <div id="controls">
         <label for="shape">Selecciona una forma:</label>
         <select id="shape">
-			<option value="rectangle">Rectángulo</option>
-			<option value="circle">Círculo</option>
-			<option value="triangle">Triángulo</option>
-			<option value="square">Cuadrado</option>
-		</select>
+            <option value="rectangle">Rectángulo</option>
+            <option value="circle">Círculo</option>
+        </select>
+        <button id="rotate">Rotar Figura</button>
+        <label for="scale">Escalar Figura:</label>
+        <input type="range" id="scale" min="0.5" max="2" step="0.1" value="1">
+        <div class="button-group">
+            <button id="moveLeft">Izquierda</button>
+            <button id="moveRight">Derecha</button>
+            <button id="moveUp">Arriba</button>
+            <button id="moveDown">Abajo</button>
+        </div>
         <button id="clear">Limpiar Canvas</button>
-		<label for="scale-input">Valor de escalado:</label>
-		<input type="number" id="scale-input" value="1">
-		<label for="scale-input">Valor de rotacion:</label>
-		<input type="number" id="rotation-input" value="1">
     </div>
     <canvas id="canvas" width="800" height="600"></canvas>
     <script src ="Dibujar.js"></script>
-	<script src="Escalado.js"></script>
-	<script src="Rotacion.js"></script>
+	<script src ="Rotacion.js"></script>
+	<script src ="Escalado.js"></script>
+	<script src ="Traslacion.js"></script>
 </body>
 </html>
